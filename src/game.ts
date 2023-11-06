@@ -6,6 +6,7 @@ export default class Demo extends Phaser.Scene {
  stars: Phaser.Physics.Arcade.Group;
  score = 0;
  scoreText: Phaser.GameObjects.Text;
+ actualFpsText: Phaser.GameObjects.Text;
  bombs: Phaser.Physics.Arcade.Group;
  gameOver: boolean;
 
@@ -102,7 +103,7 @@ export default class Demo extends Phaser.Scene {
   }
   this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
 
-  this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' } as Phaser.Types.GameObjects.Text.TextStyle);
+  this.scoreText = this.add.text(10, 10, 'Score: 0', { fontSize: '24px', fill: '#FF0000' } as Phaser.Types.GameObjects.Text.TextStyle);
 
   this.bombs = this.physics.add.group();
   this.physics.add.collider(this.bombs, this.platforms);
@@ -118,6 +119,8 @@ export default class Demo extends Phaser.Scene {
   }
 
   this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
+
+  this.actualFpsText = this.add.text(10, 10, 'Fps: 0', { fontSize: '20px', fill: '#000', color: 'red' } as Phaser.Types.GameObjects.Text.TextStyle).setDisplayOrigin(0, -24)
  }
 
  update() {
@@ -140,6 +143,8 @@ export default class Demo extends Phaser.Scene {
   if (this.cursors.up.isDown && this.player.body.touching.down) {
    this.player.setVelocityY(-330);
   }
+  const loop = this.sys.game.loop;
+  this.actualFpsText.setText('Fps: ' + loop.actualFps);
  }
 }
 
@@ -152,7 +157,7 @@ const config = {
   arcade: {
    gravity: { y: 300 },
    debug: false
-  }
+  },
  },
  scene: Demo
 };
