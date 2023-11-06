@@ -1,0 +1,9 @@
+*{
+    margin:0;
+    padding:0;
+}
+canvas{
+ display: block;
+ width: calc(100vw);
+ height: calc(100vh);
+}
