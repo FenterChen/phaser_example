@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 export default class Demo extends Phaser.Scene {
  tilesprite: Phaser.GameObjects.TileSprite;
  overlay: Phaser.GameObjects.Sprite;
- bg: Phaser.GameObjects.Image;;
+ bg: Phaser.GameObjects.Image
 
  constructor() {
   super('demo');
@@ -17,7 +17,13 @@ export default class Demo extends Phaser.Scene {
 
  create() {
   // const that = this;
-  this.bg = this.add.image(0, 0, 'bg').setOrigin(0, 0).setScale(3.2, 2.3);
+  // this.bg = this.add.image(0, 0, 'bg').setOrigin(0, 0).setScale(3.2, 2.3);
+  this.bg = this.add.image(this.game.config.width as number / 2, this.cameras.main.height as number / 2, 'bg');
+  let scaleX = this.game.config.width as number / this.bg.width;
+  let scaleY = this.game.config.height as number / this.bg.height;
+  let scale = Math.max(scaleX, scaleY);
+  console.log(scale);
+  this.bg.setScale(scale).setScrollFactor(0);
   this.tilesprite = this.add.tileSprite(0, 0, 1920, 1080, 'overlay').setOrigin(0, 0);
   const fx = this.tilesprite.postFX.addDisplacement('distort', -0.01, -0.01);
   this.tweens.add({
@@ -29,7 +35,6 @@ export default class Demo extends Phaser.Scene {
    duration: 2000,
    ease: 'sine.inout'
   });
-  // this.tilesprite.setOrigin(0, 0)
  }
 
 
@@ -41,8 +46,12 @@ export default class Demo extends Phaser.Scene {
 
 const config = {
  type: Phaser.AUTO,
- width: window.innerWidth,
- height: window.innerHeight,
+ // width: '100%',
+ // height: '100%',
+ // scale: {
+ //  mode: Phaser.Scale.FIT,
+ //  autoCenter: Phaser.Scale.CENTER_BOTH
+ // },
  physics: {
   default: 'arcade',
   arcade: {
@@ -52,6 +61,5 @@ const config = {
  },
  scene: Demo
 };
-console.log(config)
 
 const game = new Phaser.Game(config);
